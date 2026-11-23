@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 optometria-inventario/
 ├── public/                  # Único directorio expuesto al servidor web
 │   ├── index.php
@@ -34,3 +35,7 @@ optometria-inventario/
 ##
 # Volver a ver reportes hechos por 'Enviar a Proveedor'
 ### Garantias
+=======
+# Optistock
+Inventario de Optometría 
+>>>>>>> 2ba952792e0e1e239555e5ef8e7580e0b2a2a923
