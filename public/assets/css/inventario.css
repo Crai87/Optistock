@@ -1,0 +1,189 @@
+/* Reset básico */
+* { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 0; }
+body { background-color: #f8f9fa; color: #212529; }
+a { text-decoration: none; color: inherit; }
+
+/* Utilidades de Diseño (Layout) */
+.container { max-width: 1150px; margin: 0 auto; padding: 0 15px; }
+.container-fluid { width: 100%; padding: 0 20px; }
+.mt-4 { margin-top: 1.5rem; }
+.mb-4 { margin-bottom: 1.5rem; }
+.me-2 { margin-right: 0.5rem; }
+.me-3 { margin-right: 1rem; }
+.py-5 { padding-top: 3rem; padding-bottom: 3rem; }
+.px-3 { padding-left: 1rem; padding-right: 1rem; }
+
+/* Flexbox */
+.d-flex { display: flex; }
+.justify-content-between { justify-content: space-between; }
+.align-items-center { align-items: center; }
+.flex-wrap { flex-wrap: wrap; }
+.flex-grow-1 { flex-grow: 1; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 1rem; }
+
+/* Textos y Colores */
+.fw-bold { font-weight: 700; }
+.fw-semibold { font-weight: 600; }
+.mb-0 { margin-bottom: 0; }
+.text-muted { color: #6c757d; }
+.text-white { color: #fff; }
+.text-success { color: #198754; }
+.text-danger { color: #dc3545; }
+.text-warning { color: #ffc107; }
+.text-center { text-align: center; }
+.text-start { text-align: left; }
+.text-capitalize { text-transform: capitalize; }
+.small { font-size: 0.875em; }
+.fs-2 { font-size: 2rem; }
+.fs-5 { font-size: 1.25rem; }
+.bg-light { background-color: #f8f9fa; }
+.bg-white { background-color: #fff; }
+
+/* Badges (Pastillas de estado) */
+.badge { display: inline-block; padding: 0.35em 0.65em; font-size: 0.75em; font-weight: 700; line-height: 1; text-align: center; white-space: nowrap; border-radius: 50rem; }
+.bg-success-subtle { background-color: #d1e7dd; }
+.bg-danger-subtle { background-color: #f8d7da; }
+.bg-warning-subtle { background-color: #fff3cd; }
+
+/* Navbar */
+.navbar { padding: 0.5rem 1rem; background-color: #198754; box-shadow: 0 .125rem .25rem rgba(0,0,0,.075); }
+
+/* Grid (Tarjetas Superiores) */
+.row { display: flex; flex-wrap: wrap; margin-right: -10px; margin-left: -10px; }
+.col-md-4 { flex: 0 0 auto; width: 33.33333333%; padding: 0 10px; }
+
+/* Tarjetas (Cards) */
+.card { background-color: #fff; border-radius: 0.375rem; border: 1px solid rgba(0,0,0,.125); display: flex; flex-direction: column; word-wrap: break-word; }
+.card-body { padding: 1rem 1rem; flex: 1 1 auto; }
+.card-footer { padding: 0.5rem 1rem; background-color: rgba(0,0,0,.03); border-top: 1px solid rgba(0,0,0,.125); }
+.shadow-sm { box-shadow: 0 .125rem .25rem rgba(0,0,0,.075); }
+.border-0 { border: 0 !important; }
+.border-start { border-left: 4px solid !important; }
+.border-success { border-left-color: #198754 !important; }
+.border-danger { border-left-color: #dc3545 !important; }
+.border-warning { border-left-color: #ffc107 !important; }
+
+/* Botones */
+.btn { display: inline-block; font-weight: 400; line-height: 1.5; color: #212529; text-align: center; cursor: pointer; border: 1px solid transparent; padding: 0.375rem 0.75rem; font-size: 1rem; border-radius: 0.25rem; transition: color .15s, background-color .15s; }
+.btn-sm { padding: 0.25rem 0.5rem; font-size: .875rem; border-radius: 0.2rem; }
+.btn-success { color: #fff; background-color: #198754; border-color: #198754; }
+.btn-success:hover { background-color: #157347; }
+.btn-primary { color: #fff; background-color: #0d6efd; border-color: #0d6efd; }
+.btn-primary:hover { background-color: #0b5ed7; }
+.btn-light { color: #000; background-color: #f8f9fa; border-color: #f8f9fa; }
+.btn-outline-secondary { color: #6c757d; border-color: #6c757d; background-color: transparent; }
+.btn-outline-secondary:hover { color: #fff; background-color: #6c757d; }
+
+/* Formularios */
+.input-group { display: flex; align-items: stretch; width: 100%; }
+.input-group-text { display: flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 1rem; font-weight: 400; line-height: 1.5; color: #212529; text-align: center; background-color: #e9ecef; border: 1px solid #ced4da; border-radius: 0.25rem; }
+.form-control { display: block; width: 100%; padding: 0.375rem 0.75rem; font-size: 1rem; font-weight: 400; line-height: 1.5; color: #212529; background-color: #fff; border: 1px solid #ced4da; border-radius: 0.25rem; }
+.form-control:focus { border-color: #86b7fe; outline: 0; }
+.border-end-0 { border-right: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.border-start-0 { border-left: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; }
+
+/* Tablas */
+.table-responsive { overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { padding: 0.5rem; border-bottom: 1px solid #dee2e6; }
+.table-hover tbody tr:hover { background-color: rgba(0,0,0,.05); }
+
+/* Menús Desplegables (Dropdowns) */
+.dropdown { position: relative; }
+.dropdown-menu { position: absolute; top: 100%; right: 0; z-index: 1000; display: none; min-width: 10rem; padding: 0.5rem 0; margin: 0; font-size: 1rem; color: #212529; background-color: #fff; border: 1px solid rgba(0,0,0,.15); border-radius: 0.25rem; box-shadow: 0 .5rem 1rem rgba(0,0,0,.175); }
+.dropdown-menu.show { display: block; }
+.dropdown-item { display: block; width: 100%; padding: 0.25rem 1rem; clear: both; font-weight: 400; color: #212529; text-align: inherit; background-color: transparent; border: 0; cursor: pointer; }
+.dropdown-item:hover { background-color: #e9ecef; }
+.dropdown-divider { height: 0; margin: 0.5rem 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15); }
+/* Estilos del Header */
+.site-header {
+    background-color: #2d7a47; /* Color verde de tu captura */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    color: white;
+    position: relative;
+    z-index: 1000;
+}
+
+.header-logo a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    gap: 10px;
+}
+
+.logo-img { max-height: 40px; border-radius: 4px; }
+
+/* Botón Hamburguesa */
+.hamburger {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px;
+}
+
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    transition: 0.3s;
+}
+
+/* Menú Móvil (Oculto por defecto) */
+.mobile-menu {
+    position: absolute;
+    top: 100%; /* Se posiciona justo debajo del header verde */
+    right: 0;
+    background-color: #1e5631;
+    width: 250px;
+    height: 100vh;
+    display: none; /* Oculto por defecto */
+    z-index: 9999;
+    box-shadow: -5px 5px 15px rgba(0,0,0,0.3);
+}
+.mobile-menu.active {
+    display: block !important;
+}
+
+.mobile-menu ul {
+    list-style: none;
+    padding: 20px 0;
+    margin: 0;
+}
+
+.mobile-menu li a {
+    display: block;
+    padding: 15px 25px;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.mobile-menu li a:hover { background-color: #2d7a47; }
+.dropdown { position: relative; }
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0; /* Cambia a 'right: 0' si el botón está muy a la derecha */
+    z-index: 1000;
+    display: none;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 0.25rem;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.175);
+    min-width: 160px;
+}
+
+/* Esta es la clase que el JS activa */
+.dropdown-menu.show {
+    display: block !important;
+}

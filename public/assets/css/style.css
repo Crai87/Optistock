@@ -1,0 +1,215 @@
+/* ===== Base ===== */
+*{
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+body{
+    margin:0;
+    background: linear-gradient(135deg,#eef3f0,#dfe7e2);
+    color:#2b2b2b;
+}
+
+/* ===== Header ===== */
+.menu-header{
+    background: linear-gradient(90deg,#2A6F44,#3f9c63);
+    box-shadow:0 2px 10px rgba(0,0,0,0.15);
+    z-index:100;
+    height:70px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 20px;
+}
+
+.title{
+    margin:0;
+    color:white;
+    font-size:26px;
+}
+
+.right{
+    display:flex;
+    align-items:center;
+    margin-right:15px;
+}
+
+/* Top-right menu horizontal layout */
+.right .menu{
+    display:flex;
+    align-items:center;
+    gap:0px;
+}
+
+/* ===== Secondary Bar ===== */
+.menu-header-sec{
+    position:fixed;
+    top:70px;
+    left:0;
+    width:100%;
+    background:#f1f4f2;
+    padding:10px 20px;
+    border-bottom:1px solid #d5dbd7;
+}
+
+.menu-header-sec a{
+    background:white;
+    padding:6px 14px;
+    border-radius:20px;
+    border:1px solid #c9d2cc;
+    transition:.2s;
+    text-decoration: none;
+    color:black   
+}
+
+.menu-header-sec a:hover{
+    background:#2A6F44;
+    color:white;
+    border-color:#2A6F44;
+}
+
+/* ===== Navigation Buttons ===== */
+.menu li a{
+    background:rgba(255,255,255,.2);
+    border-radius:20px;
+    padding:6px 14px;
+    margin-left:8px;
+    transition:.25s;
+}
+
+.menu li a:hover{
+    background:white;
+    color:#2A6F44;
+}
+
+/* ===== Form Card ===== */
+.box{
+    background:white;
+    margin:120px auto 40px auto;
+    padding:25px;
+    width:95%;
+    max-width:1100px;
+    border-radius:14px;
+    box-shadow:0 10px 25px rgba(0,0,0,.12);
+}
+
+/* ===== Table ===== */
+table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0 12px;
+}
+
+th{
+    background:#2A6F44;
+    color:white;
+    padding:10px;
+    border:none;
+    font-weight:600;
+    text-align:left;
+}
+
+td{
+    background:#f8faf9;
+    padding:8px;
+    border:none;
+}
+
+/* Rounded row effect */
+tr td:first-child{border-radius:10px 0 0 10px;}
+tr td:last-child{border-radius:0 10px 10px 0;}
+
+/* ===== Inputs ===== */
+td textarea{
+    width:100%;
+    height:50px;
+    border:1px solid #d6ddd9;
+    border-radius:8px;
+    padding:8px;
+    resize:none;
+    transition:.2s;
+    background:white;
+}
+
+td textarea:focus{
+    outline:none;
+    border-color:#3f9c63;
+    box-shadow:0 0 0 2px rgba(63,156,99,.2);
+}
+
+select{
+    width:100%;
+    height:50px;
+    border:1px solid #d6ddd9;
+    border-radius:8px;
+    padding:8px;
+    resize:none;
+    transition:.2s;
+    background:white;
+}
+
+select:focus{
+    outline:none;
+    border-color:#3f9c63;
+    box-shadow:0 0 0 2px rgba(63,156,99,.2);
+}
+
+input[type=checkbox]:focus{
+    outline:none;
+    border-color:#3f9c63;
+    box-shadow:0 0 0 2px rgba(63,156,99,.2);
+}
+
+input[type='checkbox']:checked {
+    accent-color: #3f9c63;
+}
+
+input[type=number] {
+    width:100%;
+    height:50px;
+    border:1px solid #d6ddd9;
+    border-radius:8px;
+    padding:8px;
+    resize:none;
+    transition:.2s;
+    background:white;
+}
+
+input[type=number]:focus{
+    outline:none;
+    border-color:#3f9c63;
+    box-shadow:0 0 0 2px rgba(63,156,99,.2);
+}
+
+/* Required star */
+.required{
+    color:#e14c4c;
+    font-size: 8px;
+}
+
+/* ===== Submit Button ===== */
+.submit{
+    display:block;
+    margin:20px auto 5px auto;
+    padding:10px 40px;
+    font-size:16px;
+    font-weight:600;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(90deg,#2A6F44,#3f9c63);
+    color:white;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.submit:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 14px rgba(0,0,0,.2);
+}
+
+/* ===== Lists ===== */
+ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+}

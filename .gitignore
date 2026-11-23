@@ -1,0 +1,11 @@
+/public/respaldos/*
+!/public/respaldos/.gitkeep
+/src/public/respaldos
+/public/assets/img/inventario/*
+!/public/assets/img/inventario/.gitkeep
+/logs/
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

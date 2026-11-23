@@ -1,0 +1,275 @@
+-- ============================================================
+--  OptiStock — Script de instalación completo
+--  Sistema de Gestión de Inventario para Clínica Optometría
+-- ============================================================
+--  INSTRUCCIONES:
+--  1. Abre phpMyAdmin
+--  2. Haz clic en la pestaña "SQL"
+--  3. Copia y pega TODO este archivo
+--  4. Haz clic en "Continuar" o "Ejecutar"
+--  5. Listo. El sistema ya puede funcionar.
+--
+--  CREDENCIALES INICIALES DEL ADMINISTRADOR:
+--    Usuario:    admin
+--    Contraseña: 12345678
+-- ============================================================
+
+-- ── Crear y seleccionar la base de datos ─────────────────────
+DROP DATABASE IF EXISTS optometria_bd;
+CREATE DATABASE optometria_bd
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+USE optometria_bd;
+
+-- ── ROLES ────────────────────────────────────────────────────
+CREATE TABLE roles (
+    id     INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE
+);
+
+-- ── PERMISOS ─────────────────────────────────────────────────
+CREATE TABLE permisos (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    descripcion VARCHAR(255) NOT NULL UNIQUE
+);
+
+-- ── USUARIOS ─────────────────────────────────────────────────
+CREATE TABLE usuarios (
+    id               INT PRIMARY KEY AUTO_INCREMENT,
+    username         VARCHAR(50)  NOT NULL UNIQUE,
+    password_hash    VARCHAR(255) NOT NULL,
+    nombre           VARCHAR(30),
+    apellido_paterno VARCHAR(30),
+    apellido_materno VARCHAR(30),
+    rol_id           INT NOT NULL,
+    activo           TINYINT(1) DEFAULT 1,
+    creado_por       INT NULL,
+    created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (rol_id)     REFERENCES roles(id),
+    FOREIGN KEY (creado_por) REFERENCES usuarios(id)
+);
+
+-- ── USUARIO — PERMISOS ───────────────────────────────────────
+CREATE TABLE usuario_permisos (
+    usuario_id INT NOT NULL,
+    permiso_id INT NOT NULL,
+    PRIMARY KEY (usuario_id, permiso_id),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (permiso_id) REFERENCES permisos(id) ON DELETE CASCADE
+);
+
+-- ── PROVEEDORES ──────────────────────────────────────────────
+CREATE TABLE proveedores (
+    id        INT PRIMARY KEY AUTO_INCREMENT,
+    nombre    VARCHAR(150) NOT NULL,
+    telefono  VARCHAR(20),
+    email     VARCHAR(120),
+    direccion TEXT
+);
+
+-- ── CONTACTOS DE PROVEEDOR ───────────────────────────────────
+CREATE TABLE contactos_proveedor (
+    id               INT PRIMARY KEY AUTO_INCREMENT,
+    proveedor_id     INT NOT NULL,
+    nombre           VARCHAR(80),
+    apellido_paterno VARCHAR(80),
+    apellido_materno VARCHAR(80),
+    puesto           VARCHAR(80),
+    telefono         VARCHAR(20),
+    email            VARCHAR(120),
+    FOREIGN KEY (proveedor_id) REFERENCES proveedores(id) ON DELETE CASCADE
+);
+
+-- ── MARCAS DE ARMAZONES ──────────────────────────────────────
+CREATE TABLE marcas_armazon (
+    id     INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- ── ARMAZONES ────────────────────────────────────────────────
+CREATE TABLE armazones (
+    id                      INT PRIMARY KEY AUTO_INCREMENT,
+    codigo                  VARCHAR(60) NOT NULL UNIQUE,
+    descripcion             TEXT,
+    area                    VARCHAR(80),
+    marca_id                INT,
+    material                VARCHAR(80),
+    modelo                  VARCHAR(80),
+    proveedor_id            INT,
+    tiene_garantia          TINYINT(1) DEFAULT 0,
+    cantidad_stock          INT DEFAULT 0,
+    costo                   DECIMAL(10,2),
+    estado                  ENUM('disponible','dañado','en_garantia','baja','donado','inventario_muerto') DEFAULT 'disponible',
+    donado_a                VARCHAR(150) NULL COMMENT 'Nombre de la persona o institución a quien se donó',
+    fecha_donacion          DATE NULL COMMENT 'Fecha en que se realizó la donación',
+    fecha_inventario_muerto DATE NULL COMMENT 'Fecha en que el armazón pasó a inventario_muerto',
+    created_by              INT NULL,
+    created_at              TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at              TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (marca_id)     REFERENCES marcas_armazon(id),
+    FOREIGN KEY (proveedor_id) REFERENCES proveedores(id),
+    FOREIGN KEY (created_by)   REFERENCES usuarios(id)
+);
+
+-- Vista auxiliar: armazones que deberían ser inventario_muerto
+CREATE OR REPLACE VIEW v_armazones_vencidos AS
+    SELECT id, codigo, descripcion, created_at,
+           DATEDIFF(NOW(), created_at) AS dias_en_inventario
+    FROM armazones
+    WHERE estado = 'disponible'
+      AND DATEDIFF(NOW(), created_at) >= 365;
+
+-- ── CATEGORÍAS DE INMOBILIARIO ───────────────────────────────
+CREATE TABLE categorias_inmobiliario (
+    id     INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- ── INMOBILIARIO ─────────────────────────────────────────────
+CREATE TABLE inmobiliario (
+    id                INT PRIMARY KEY AUTO_INCREMENT,
+    codigo            VARCHAR(60) NOT NULL UNIQUE,
+    nombre            VARCHAR(150) NOT NULL,
+    descripcion       TEXT,
+    categoria_id      INT,
+    cantidad          INT DEFAULT 1,
+    estado            ENUM('activo','en_espera','en_reparacion','baja') DEFAULT 'activo',
+    ubicacion         VARCHAR(100),
+    imagen_url        VARCHAR(255),
+    proveedor_id      INT,
+    fecha_adquisicion DATE,
+    created_by        INT NULL,
+    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (categoria_id) REFERENCES categorias_inmobiliario(id),
+    FOREIGN KEY (proveedor_id) REFERENCES proveedores(id),
+    FOREIGN KEY (created_by)   REFERENCES usuarios(id)
+);
+
+-- ── MARCAS DE EQUIPOS CLÍNICOS ───────────────────────────────
+CREATE TABLE marcas_equipos (
+    id     INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- ── EQUIPOS CLÍNICOS ─────────────────────────────────────────
+CREATE TABLE equipos_clinicos (
+    id                     INT PRIMARY KEY AUTO_INCREMENT,
+    codigo                 VARCHAR(60) NOT NULL UNIQUE,
+    nombre                 VARCHAR(150) NOT NULL,
+    descripcion            TEXT,
+    marca_id               INT,
+    modelo                 VARCHAR(80),
+    proveedor_id           INT,
+    cantidad_total         INT DEFAULT 1,
+    cantidad_servicio      INT DEFAULT 0,
+    cantidad_mantenimiento INT DEFAULT 0,
+    estado                 ENUM('activo','en_mantenimiento','baja') DEFAULT 'activo',
+    imagen_url             VARCHAR(255),
+    fecha_adquisicion      DATE,
+    created_by             INT NULL,
+    created_at             TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (marca_id)     REFERENCES marcas_equipos(id),
+    FOREIGN KEY (proveedor_id) REFERENCES proveedores(id),
+    FOREIGN KEY (created_by)   REFERENCES usuarios(id)
+);
+
+-- ── FOLIOS DE GARANTÍA ───────────────────────────────────────
+CREATE TABLE folios_garantia (
+    id                INT PRIMARY KEY AUTO_INCREMENT,
+    folio             VARCHAR(30) NOT NULL UNIQUE,
+    tipo              ENUM('armazon','inmobiliario','equipo_clinico') NOT NULL,
+    armazon_id        INT,
+    inmobiliario_id   INT,
+    equipo_clinico_id INT,
+    motivo            TEXT NOT NULL,
+    estado            ENUM('abierto','enviado_proveedor','resuelto','rechazado') DEFAULT 'abierto',
+    proveedor_id      INT,
+    fecha_apertura    DATE NOT NULL,
+    fecha_resolucion  DATE,
+    resolucion        TEXT,
+    creado_por        INT NULL,
+    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (armazon_id)        REFERENCES armazones(id),
+    FOREIGN KEY (inmobiliario_id)   REFERENCES inmobiliario(id),
+    FOREIGN KEY (equipo_clinico_id) REFERENCES equipos_clinicos(id),
+    FOREIGN KEY (proveedor_id)      REFERENCES proveedores(id),
+    FOREIGN KEY (creado_por)        REFERENCES usuarios(id)
+);
+
+-- ── MOVIMIENTOS DE INVENTARIO ────────────────────────────────
+CREATE TABLE movimientos_inventario (
+    id                INT PRIMARY KEY AUTO_INCREMENT,
+    tipo_item         ENUM('armazon','inmobiliario','equipo_clinico') NOT NULL,
+    item_id           INT NOT NULL,
+    tipo_movimiento   ENUM('entrada','salida','ajuste','garantia','baja') NOT NULL,
+    cantidad          INT NOT NULL,
+    motivo            VARCHAR(255),
+    folio_garantia_id INT,
+    usuario_id        INT NULL,
+    fecha             TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (folio_garantia_id) REFERENCES folios_garantia(id),
+    FOREIGN KEY (usuario_id)        REFERENCES usuarios(id)
+);
+
+-- ── REPORTES ─────────────────────────────────────────────────
+CREATE TABLE reportes (
+    id           INT PRIMARY KEY AUTO_INCREMENT,
+    titulo       VARCHAR(200) NOT NULL,
+    tipo         ENUM('inventario_armazones','inventario_inmobiliario','equipos_clinicos','garantias','movimientos','general') NOT NULL,
+    filtros_json JSON,
+    generado_por INT NULL,
+    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (generado_por) REFERENCES usuarios(id)
+);
+
+-- ============================================================
+--  DATOS INICIALES OBLIGATORIOS PARA ARRANCAR EL SISTEMA
+-- ============================================================
+
+-- Roles
+INSERT INTO roles (id, nombre) VALUES
+(1, 'admin'),
+(2, 'invitado');
+
+-- Permisos (12 permisos del sistema)
+INSERT INTO permisos (id, descripcion) VALUES
+(1,  'Ver armazones'),
+(2,  'Generar reporte armazones'),
+(3,  'Agregar armazones'),
+(4,  'Editar armazones'),
+(5,  'Ver equipos'),
+(6,  'Generar reporte equipos'),
+(7,  'Agregar equipos'),
+(8,  'Editar equipos'),
+(9,  'Ver garantias'),
+(10, 'Agregar garantias'),
+(11, 'Editar garantias'),
+(12, 'reservado_sistema');
+
+-- Usuario administrador
+-- Contraseña: 12345678
+INSERT INTO usuarios (
+    id, username, password_hash,
+    nombre, apellido_paterno, apellido_materno,
+    rol_id, activo, creado_por
+) VALUES (
+    1,
+    'admin',
+    '$2y$10$nUMptbb1ecB08pvVGkAkouCVjjTKwUp1UdLu0dCtqDDVylhuLvL4a',
+    'Administrador', 'Sistema', '',
+    1, 1, NULL
+);
+
+-- Categorías de inmobiliario iniciales
+INSERT INTO categorias_inmobiliario (nombre) VALUES
+('Laptops'),
+('Mobiliario'),
+('Equipos de oficina'),
+('Otros');
+
+-- ============================================================
+--  FIN DEL SCRIPT
+--  El sistema ya está listo para usarse.
+--  Inicia sesión con: admin / 12345678
+-- ============================================================
